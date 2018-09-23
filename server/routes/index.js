@@ -22,7 +22,18 @@ router.post('/schools', (req, res, next) => {
     .catch(error => next(error));
 });
 
+router.put('/schools/:id', (req, res, next) => {
+  const { name, address, description } = req.body;
+  School.findById(req.params.id).then(school =>
+    school
+      .update({ name, address, description })
+      .then(school => res.json(school))
+      .catch(next)
+  );
+});
+
 router.delete('/schools/:id', (req, res, next) => {
+  // console.log(req.params.id);
   School.findById(req.params.id)
     .then(school => school.destroy())
     .then(() => res.sendStatus(204))

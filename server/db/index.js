@@ -34,6 +34,9 @@ const Student = connection.define('student', {
   },
 });
 
+School.hasMany(Student);
+Student.belongsTo(School);
+
 const syncAndSeed = () => {
   connection.sync({ force: true }).then(() => {
     return Promise.all([
@@ -117,9 +120,6 @@ const syncAndSeed = () => {
     });
   });
 };
-
-School.hasMany(Student);
-Student.belongsTo(School);
 
 module.exports = {
   syncAndSeed,
