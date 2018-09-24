@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
-import { editSchool, deleteSchool } from '../store';
-import Selector from './Selector';
+import { editSchool, deleteSchool, fetchSchool, loadData} from '../store';
+import SchoolForm from './SchoolForm'
+
 
 class IndivSchool extends React.Component {
   constructor() {
@@ -11,72 +11,73 @@ class IndivSchool extends React.Component {
       name: '',
       address: '',
       description: '',
-      enrollingStudents: [],
+      enrollingStudents: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.addStudent = this.addStudent.bind(this);
+    this.findSchool = this.findSchool.bind(this)
   }
-  async componentDidMount() {
-    let school = this.props.schools.find(
+  componentDidMount() {
+    let school = this.findSchool()
+    if(school){
+      this.setState({
+        name: school.name,
+        address: school.address,
+        description: school.description,
+      });
+    } 
+  }
+  componentDidUpdate(prevProps, prevState){
+    if(prevProps.schools.length !== this.props.schools.length && prevProps.students.length !== this.props.students.length){
+      this.props.loadData()
+      const school = this.findSchool();
+      this.setState({
+        name: school.name,
+        address: school.address,
+        description: school.description,
+      });
+    }
+  } 
+
+  findSchool(){
+    return this.props.schools.find(
       school => school.id === +this.props.match.params.id
     );
-
-    if (!school) {
-      const data = await axios.get(
-        `/api/schools/${this.props.match.params.id}`
-      );
-      school = data.data;
-    }
-
-    this.setState({
-      name: school.name,
-      address: school.address,
-      description: school.description,
-      potentialStudents: students,
-    });
   }
+
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
     });
   }
+
   handleSubmit(event) {
     event.preventDefault();
-    const { name, address, description, enrollingStudents } = this.state;
+    const { name, address, description } = this.state;
     this.props.edit(
       {
         name,
         address,
         description,
-        enrollingStudents,
         id: this.props.match.params.id,
       },
       this.props.history
     );
   }
-  addStudent() {}
+
+  addStudent(event) {
+    console.log(event.target.value)
+  }
+
   render() {
-    const { name, address, description, potentialStudents } = this.state;
-    const { deleteSchool, match, history } = this.props;
+    const { name, address, description, enrollingStudents } = this.state;
+    const { match, history, deleteSchool, students} = this.props
+    const {handleChange, handleSubmit, addStudent} = this
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="name">Name:</label>
-          <input value={name} name="name" onChange={this.handleChange} />
-          <label htmlFor="description">Description:</label>
-          <input
-            value={description}
-            name="description"
-            onChange={this.handleChange}
-          />
-          <label htmlFor="address">Address:</label>
-          <input value={address} name="address" onChange={this.handleChange} />
-          <button type="submit">Edit</button>
-          <button onClick={() => deleteSchool(+match.params.id, history)}>
-            Delete School
-          </button>
-          <Selector id={+match.params.id} />
-        </form>
+        <div>Enrolling Students:{enrollingStudents.length}</div>
+        <SchoolForm addStudent={addStudent} name={name} address={address} description={description} deleteSchool={deleteSchool} handleChange={handleChange} handleSubmit={handleSubmit} match={match} history={history} students={students}/>
       </div>
     );
   }
@@ -93,10 +94,9 @@ const mapDispatchToProps = dispatch => {
   return {
     edit: (school, history) => dispatch(editSchool(school, history)),
     deleteSchool: (id, history) => dispatch(deleteSchool(id, history)),
+    fetchSchool : id => fetchSchool(id),
+    loadData: () => dispatch(loadData())
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(IndivSchool);
+export default connect(mapStateToProps,mapDispatchToProps)(IndivSchool);

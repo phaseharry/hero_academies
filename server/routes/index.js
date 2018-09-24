@@ -41,7 +41,9 @@ router.delete('/schools/:id', (req, res, next) => {
 });
 
 router.get('/students/:id', (req, res, next) => {
-  Student.findById(req.params.id)
+  Student.findById(req.params.id, {
+    include: [ { model : School  }]
+  })
     .then(student => res.json(student))
     .catch(error => next(error));
 });
@@ -51,6 +53,17 @@ router.get('/students', (req, res, next) => {
     .then(students => res.json(students))
     .catch(error => next(error));
 });
+
+router.put('/students/:id', (req, res, next) => {
+  const { firstName, lastName, schoolId, gpa } = req.body;
+  console.log(req.params.id)
+  Student.findById(req.params.id)
+  .then(student => student.update({firstName, lastName, schoolId, gpa})
+  .then((student) => res.json(student))
+  .catch(error => next(error))
+  )
+});
+
 
 router.post('/students', (req, res, next) => {
   Student.create(req.body)

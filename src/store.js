@@ -4,30 +4,24 @@ import axios from 'axios';
 import logger from 'redux-logger';
 
 //action types
-const LOAD_SCHOOLS = 'LOAD_SCHOOLS';
-const LOAD_STUDENTS = 'LOAD_STUDENTS';
+const LOAD_DATA= 'LOAD_DATA';
 const EDIT_SCHOOL = 'EDIT_SCHOOL';
 const EDIT_STUDENT = 'EDIT_STUDENT';
 const DELETE_SCHOOL = 'DELETE_SCHOOL';
+const DELETE_STUDENT = 'DELETE_STUDENT';
 
 //action creators
-const _loadSchools = schools => ({ type: LOAD_SCHOOLS, schools });
-const _loadStudents = students => ({ type: LOAD_STUDENTS, students });
+const _loadData = (schools, students) => ({ type: LOAD_DATA, schools, students});
 const _editSchool = school => ({ type: EDIT_SCHOOL, school });
 const _editStudent = student => ({ type: EDIT_STUDENT, student });
 const _deleteSchool = id => ({ type: DELETE_SCHOOL, id });
+const _deleteStudent = id => ({ type: DELETE_STUDENT, id});
 
-export const loadSchools = () => {
+export const loadData = () => {
   return async dispatch => {
     const schools = await axios.get('/api/schools');
-    dispatch(_loadSchools(schools.data));
-  };
-};
-
-export const loadStudents = () => {
-  return async dispatch => {
-    const students = await axios.get('/api/students');
-    dispatch(_loadStudents(students.data));
+    const students = await axios.get('/api/students')
+    dispatch(_loadData(schools.data, students.data));
   };
 };
 
@@ -42,7 +36,8 @@ export const editSchool = (school, history) => {
 
 export const editStudent = (student, history) => {
   return async dispatch => {
-    const data = await axios.put(`/api/schools/${id}`, student);
+    const data = await axios.put(`/api/students/${student.id}`, {...student, gpa: +student.gpa});
+    console.log(data)
     dispatch(_editStudent(data.data));
     history.push('/students');
   };
@@ -57,8 +52,31 @@ export const deleteSchool = (id, history) => {
   };
 };
 
+export const deleteStudent = (id, history) => {
+  return async dispatch => {
+    await axios.delete(`/api/students/${id}`)
+    dispatch(_deleteStudent(id))
+    history.push('/students')
+  }
+}
+
+export const fetchStudent = id => {
+  return axios.get(`/api/students/${id}`)
+  .then(student => student.data)
+}
+
+export const fetchSchool = id => {
+  return axios.get(`/api/schools/${id}`)
+  .then(school => student.data)
+}
+
 const reducer = (state = { schools: [], students: [] }, action) => {
   switch (action.type) {
+    case DELETE_STUDENT: 
+      return {
+        ...state,
+        students: state.students.filter(student => student.id !== action.id)
+      }
     case DELETE_SCHOOL:
       return {
         ...state,
@@ -82,10 +100,8 @@ const reducer = (state = { schools: [], students: [] }, action) => {
           return student;
         }),
       };
-    case LOAD_SCHOOLS:
-      return { ...state, schools: action.schools };
-    case LOAD_STUDENTS:
-      return { ...state, students: action.students };
+    case LOAD_DATA:
+      return { ...state, schools: action.schools, students: action.students};
     default:
       return state;
   }
