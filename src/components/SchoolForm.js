@@ -5,7 +5,7 @@ const SchoolFrom = props => {
     const {name, address, description, deleteSchool, handleChange, handleSubmit, students, match, history, addStudent} = props
     return (
       <div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} id='schoolForm'>
           <label htmlFor="name">Name:</label>
           <input value={name} name="name" onChange={handleChange} />
           <label htmlFor="description">Description:</label>
@@ -20,8 +20,12 @@ const SchoolFrom = props => {
           <button onClick={() => deleteSchool(+match.params.id, history)}>
             Delete School
           </button>
-         
         </form>
+        <h5>Enroll Student</h5>
+        <select name='enrollingStudents' form='schoolForm'>
+          <option value={null}></option>
+          {students.map(student => <option key={student.id} value={student.id}>{`${student.firstName} ${student.lastName}`}</option>)}
+        </select>
       </div>
     )
 }

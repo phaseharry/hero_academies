@@ -65,8 +65,8 @@ class IndivSchool extends React.Component {
       this.props.history
     );
   }
-
   addStudent(event) {
+    console.log(event.target.name)
     console.log(event.target.value)
   }
 
@@ -76,7 +76,7 @@ class IndivSchool extends React.Component {
     const {handleChange, handleSubmit, addStudent} = this
     return (
       <div>
-        <div>Enrolling Students:{enrollingStudents.length}</div>
+        <div>New Enrolling Students: {enrollingStudents.length}</div>
         <SchoolForm name={name} address={address} description={description} deleteSchool={deleteSchool} handleChange={handleChange} handleSubmit={handleSubmit} match={match} history={history} students={students}/>
       </div>
     );
