@@ -73,6 +73,7 @@ class IndivStudent extends React.Component{
         const { match, history } = this.props
         const { handleChange, handleSubmit, deleteStudent, filterSchool} = this
         const schools = filterSchool()
+        console.log(schools)
         return (
            <StudentForm firstName={firstName} lastName={lastName} gpa={gpa} schoolId={schoolId} match={match} history={history} handleChange={handleChange} handleSubmit={handleSubmit} deleteStudent={deleteStudent} schools={schools}/>
         )

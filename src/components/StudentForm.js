@@ -17,16 +17,16 @@ const StudentForm = props => {
                     <label htmlFor="gpa">GPA:</label>
                     <input value={gpa} name="gpa" onChange={handleChange} />
                     <button type="submit">Edit</button>
-                    <button onClick={() => deleteStudent(+match.params.id, history)}>
-                        Delete Student
-                    </button>
             </form>
+                <button onClick={() => deleteStudent(+match.params.id, history)}>
+                        Delete Student
+                </button>
             <div>
                 <h5>School Change</h5>
-                <select name='schoolId' form='studentForm' onChange={handleChange}>
+                {/* <select name='schoolId' form='studentForm' onChange={handleChange}>
                     <option value={schoolId}>Keep Enrollment</option>
                     {schools.map(school => <option key={school.id} value={school.id}>{school.name}</option>)}
-                </select>
+                </select> */}
             </div>
         </div>
     )
