@@ -56,7 +56,7 @@ router.get('/students', (req, res, next) => {
 
 router.put('/students/:id', (req, res, next) => {
   const { firstName, lastName, schoolId, gpa } = req.body;
-  console.log(req.params.id)
+  console.log(req.body)
   Student.findById(req.params.id)
   .then(student => student.update({firstName, lastName, schoolId, gpa})
   .then((student) => res.json(student))

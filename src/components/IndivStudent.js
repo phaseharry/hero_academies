@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { editStudent, deleteStudent, fetchStudent }from '../store'
+import { editStudent, deleteStudent } from '../store'
+import StudentForm from './StudentForm'
 
 class IndivStudent extends React.Component{
     constructor(){
@@ -15,6 +16,7 @@ class IndivStudent extends React.Component{
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.deleteStudent = this.deleteStudent.bind(this)
+        this.filterSchool = this.filterSchool.bind(this)
     }
     async componentDidMount(){
         const student = this.filterStudent(this.props.students)
@@ -27,8 +29,8 @@ class IndivStudent extends React.Component{
        
     }
     componentDidUpdate(prevProps, prevState){
-        console.log(prevProps)
-        console.log(this.props)
+        // console.log(prevProps)
+        // console.log(this.props)
         if(prevProps.students.length !== this.props.students.length && prevProps.schools.length !== this.props.schools.length){
             const student = this.filterStudent(this.props.students)
             const {firstName, lastName, gpa, schoolId} = student
@@ -43,47 +45,35 @@ class IndivStudent extends React.Component{
     filterStudent(students){
         return students.find(student => student.id === +this.props.match.params.id)
     }
+    filterSchool(){
+        const student = this.filterStudent(this.props.students)
+        return this.props.schools.filter(school => school.id !== student.schoolId)
+    }
     handleChange(event){
-        console.log(event.target.name)
+        // console.log(event.target.name)
+        // console.log(event.target.value)
         this.setState({
-            [event.target.name] : event.target.value
-    })
+            [event.target.name] : +event.target.value
+        })
     }
     handleSubmit(event){
       event.preventDefault()
-      console.log(typeof this.state.gpa)
+        console.log(this.state)
       this.props.edit({...this.state, id: this.props.match.params.id}, this.props.history)
     }
     deleteStudent(id, history){
-        console.log(this.props)
+        // console.log(this.props)
         this.props.deleteStudent(id, history)
     }
     render(){
         const { firstName, lastName, gpa, schoolId } = this.state
         const { match, history } = this.props
-        const { handleChange, handleSubmit, deleteStudent } = this
+        const { handleChange, handleSubmit, deleteStudent, filterSchool} = this
+        const schools = filterSchool()
         return (
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="firstName">First Name:</label>
-                <input value={firstName} name="firstName" onChange={handleChange} />
-                <label htmlFor="lastName">Last Name:</label>
-                <input
-                value={lastName}
-                name="lastName"
-                onChange={handleChange}
-                />
-                <label htmlFor="gpa">GPA:</label>
-                <input value={gpa} name="gpa" onChange={handleChange} />
-                <label htmlFor="school"></label>
-                <button type="submit">Edit</button>
-                <button onClick={() => deleteStudent(+match.params.id, history)}>
-                Delete Student
-                </button>
-             </form>
+           <StudentForm firstName={firstName} lastName={lastName} gpa={gpa} schoolId={schoolId} match={match} history={history} handleChange={handleChange} handleSubmit={handleSubmit} deleteStudent={deleteStudent} schools={schools}/>
         )
     }
-
-
 }
 
 
@@ -98,7 +88,6 @@ const mapDispatchToProps = dispatch => {
     return {
         edit: (student, history) => dispatch(editStudent(student, history)),
         deleteStudent: (id, history) => dispatch(deleteStudent(id,history)),
-        fetchStudent: (id) => fetchStudent(id)
     }
 }
 
