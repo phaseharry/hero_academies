@@ -36,7 +36,7 @@ export const editSchool = (school, history) => {
 
 export const editStudent = (student, history) => {
   return async dispatch => {
-    const data = await axios.put(`/api/students/${student.id}`, {...student, gpa: +student.gpa});
+    const data = await axios.put(`/api/students/${student.id}`, {...student, schoolId: +student.schoolId, gpa: +student.gpa});
     console.log(data)
     dispatch(_editStudent(data.data));
     history.push('/students');

@@ -18,15 +18,16 @@ class IndivStudent extends React.Component{
         this.deleteStudent = this.deleteStudent.bind(this)
         this.filterSchool = this.filterSchool.bind(this)
     }
-    async componentDidMount(){
+    componentDidMount(){
         const student = this.filterStudent(this.props.students)
+        console.log(student)
         if(student){
             const { firstName, lastName, gpa, schoolId} = student
             this.setState({
                 firstName, lastName, gpa, schoolId
             })
         }
-       
+        
     }
     componentDidUpdate(prevProps, prevState){
         // console.log(prevProps)
@@ -34,6 +35,7 @@ class IndivStudent extends React.Component{
         if(prevProps.students.length !== this.props.students.length && prevProps.schools.length !== this.props.schools.length){
             const student = this.filterStudent(this.props.students)
             const {firstName, lastName, gpa, schoolId} = student
+            console.log(student)
             this.setState({
                 firstName,
                 lastName,
@@ -47,13 +49,14 @@ class IndivStudent extends React.Component{
     }
     filterSchool(){
         const student = this.filterStudent(this.props.students)
+        if(!student) return null
         return this.props.schools.filter(school => school.id !== student.schoolId)
     }
     handleChange(event){
         // console.log(event.target.name)
         // console.log(event.target.value)
         this.setState({
-            [event.target.name] : +event.target.value
+            [event.target.name]: event.target.value
         })
     }
     handleSubmit(event){
