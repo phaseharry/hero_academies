@@ -30,7 +30,7 @@ class IndivSchool extends React.Component {
   }
   componentDidUpdate(prevProps, prevState){
     if(prevProps.schools.length !== this.props.schools.length && prevProps.students.length !== this.props.students.length){
-      this.props.loadData()
+      // this.props.loadData()
       const school = this.findSchool();
       this.setState({
         name: school.name,
@@ -77,7 +77,7 @@ class IndivSchool extends React.Component {
     return (
       <div>
         <div>Enrolling Students:{enrollingStudents.length}</div>
-        <SchoolForm addStudent={addStudent} name={name} address={address} description={description} deleteSchool={deleteSchool} handleChange={handleChange} handleSubmit={handleSubmit} match={match} history={history} students={students}/>
+        <SchoolForm name={name} address={address} description={description} deleteSchool={deleteSchool} handleChange={handleChange} handleSubmit={handleSubmit} match={match} history={history} students={students}/>
       </div>
     );
   }

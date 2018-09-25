@@ -17,16 +17,28 @@ class IndivStudent extends React.Component{
         this.deleteStudent = this.deleteStudent.bind(this)
     }
     async componentDidMount(){
-        console.log(this.props)
-        let student = this.filterStudent(this.props.students)
-        if(!student){
-            student = await this.props.fetchStudent(+this.props.match.params.id)
+        const student = this.filterStudent(this.props.students)
+        if(student){
+            const { firstName, lastName, gpa, schoolId} = student
+            this.setState({
+                firstName, lastName, gpa, schoolId
+            })
         }
-
-        const { firstName, lastName, gpa, schoolId} = student
-        this.setState({
-            firstName, lastName, gpa, schoolId
-        })
+       
+    }
+    componentDidUpdate(prevProps, prevState){
+        console.log(prevProps)
+        console.log(this.props)
+        if(prevProps.students.length !== this.props.students.length && prevProps.schools.length !== this.props.schools.length){
+            const student = this.filterStudent(this.props.students)
+            const {firstName, lastName, gpa, schoolId} = student
+            this.setState({
+                firstName,
+                lastName,
+                gpa,
+                schoolId
+            })
+        } 
     }
     filterStudent(students){
         return students.find(student => student.id === +this.props.match.params.id)
@@ -77,7 +89,8 @@ class IndivStudent extends React.Component{
 
 const mapStateToProps = state => {
     return {
-        students: state.students
+        students: state.students,
+        schools: state.schools
     }
 }
 
