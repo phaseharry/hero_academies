@@ -23,10 +23,10 @@ const SchoolFrom = props => {
         <label htmlFor="address">Address:</label>
         <input value={address} name="address" onChange={handleChange} />
         <button type="submit">Edit</button>
-        <button onClick={() => deleteSchool(+match.params.id, history)}>
-          Delete School
-        </button>
       </form>
+      <button onClick={() => deleteSchool(+match.params.id, history)}>
+        Delete School
+      </button>
       <h5>Enroll Student</h5>
       <select name="enrollingStudents" form="schoolForm">
         <option value={null} />

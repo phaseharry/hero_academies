@@ -32,7 +32,6 @@ class IndivSchool extends React.Component {
       prevProps.schools.length !== this.props.schools.length &&
       prevProps.students.length !== this.props.students.length
     ) {
-      // this.props.loadData()
       const school = this.findSchool();
       this.setState({
         name: school.name,
@@ -76,6 +75,9 @@ class IndivSchool extends React.Component {
     const { name, address, description, enrollingStudents } = this.state;
     const { match, history, deleteSchool, students } = this.props;
     const { handleChange, handleSubmit, addStudent } = this;
+    const filteredStudents = students.filter(
+      student => student.schoolId !== +match.params.id
+    );
     return (
       <div>
         <div>New Enrolling Students: {enrollingStudents.length}</div>
@@ -88,7 +90,7 @@ class IndivSchool extends React.Component {
           handleSubmit={handleSubmit}
           match={match}
           history={history}
-          students={students}
+          students={filteredStudents}
         />
       </div>
     );

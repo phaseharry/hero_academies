@@ -38,7 +38,6 @@ class IndivStudent extends React.Component {
     ) {
       const student = this.filterStudent(this.props.students);
       const { firstName, lastName, gpa, schoolId } = student;
-      //console.log(student);
       this.setState({
         firstName,
         lastName,
@@ -82,7 +81,6 @@ class IndivStudent extends React.Component {
     const { match, history } = this.props;
     const { handleChange, handleSubmit, deleteStudent, filterSchool } = this;
     const schools = filterSchool() || [];
-
     return (
       <StudentForm
         firstName={firstName}
