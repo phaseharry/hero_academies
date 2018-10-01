@@ -7,19 +7,19 @@ router.get('/schools/:id', (req, res, next) => {
     include: [{ model: Student }],
   })
     .then(school => res.json(school))
-    .catch(error => next(error));
+    .catch(next);
 });
 
 router.get('/schools', (req, res, next) => {
   School.findAll()
     .then(schools => res.json(schools))
-    .catch(error => next(error));
+    .catch(next);
 });
 
 router.post('/schools', (req, res, next) => {
   School.create(req.body)
     .then(school => res.json(school))
-    .catch(error => next(error));
+    .catch(next);
 });
 
 router.put('/schools/:id', (req, res, next) => {
@@ -37,7 +37,7 @@ router.delete('/schools/:id', (req, res, next) => {
   School.findById(req.params.id)
     .then(school => school.destroy())
     .then(() => res.sendStatus(204))
-    .catch(error => next(error));
+    .catch(next);
 });
 
 router.get('/students/:id', (req, res, next) => {
@@ -45,37 +45,37 @@ router.get('/students/:id', (req, res, next) => {
     include: [ { model : School  }]
   })
     .then(student => res.json(student))
-    .catch(error => next(error));
+    .catch(next);
 });
 
 router.get('/students', (req, res, next) => {
   Student.findAll()
     .then(students => res.json(students))
-    .catch(error => next(error));
+    .catch(next);
 });
 
 router.put('/students/:id', (req, res, next) => {
-  const { firstName, lastName, schoolId, gpa } = req.body;
-  console.log(req.body)
+  // console.log(req.body)
+  // const { firstName, lastName, schoolId, gpa } = req.body;
+  
   Student.findById(req.params.id)
-  .then(student => student.update({firstName, lastName, schoolId, gpa})
+  .then(student => student.update(req.body)
   .then((student) => res.json(student))
-  .catch(error => next(error))
+  .catch(next)
   )
 });
-
 
 router.post('/students', (req, res, next) => {
   Student.create(req.body)
     .then(student => res.json(student))
-    .catch(error => next(error));
+    .catch(next);
 });
 
 router.delete('/students/:id', (req, res, next) => {
   Student.findById(req.params.id)
     .then(student => student.destroy())
     .then(() => res.sendStatus(204))
-    .catch(error => next(error));
+    .catch(next);
 });
 
 module.exports = router;

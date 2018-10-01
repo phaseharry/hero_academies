@@ -9,17 +9,19 @@ const EDIT_SCHOOL = 'EDIT_SCHOOL';
 const EDIT_STUDENT = 'EDIT_STUDENT';
 const DELETE_SCHOOL = 'DELETE_SCHOOL';
 const DELETE_STUDENT = 'DELETE_STUDENT';
-
+const ENROLL_STUDENT = 'ENROLL_STUDENT';
 //action creators
 const _loadData = (schools, students) => ({
   type: LOAD_DATA,
   schools,
   students,
 });
+
 const _editSchool = school => ({ type: EDIT_SCHOOL, school });
 const _editStudent = student => ({ type: EDIT_STUDENT, student });
 const _deleteSchool = id => ({ type: DELETE_SCHOOL, id });
 const _deleteStudent = id => ({ type: DELETE_STUDENT, id });
+const _enrollStudent = student => ({ type: ENROLL_STUDENT, student})
 
 export const loadData = () => {
   return async dispatch => {
@@ -68,16 +70,24 @@ export const deleteStudent = (id, history) => {
   };
 };
 
-export const fetchStudent = id => {
-  return axios.get(`/api/students/${id}`).then(student => student.data);
-};
+export const enrollStudent = (studentId, schoolId) => {
+  return async dispatch => {
+    const student = await axios.put(`/api/students/${studentId}`, { schoolId: +schoolId })
+    dispatch(_enrollStudent(student.data))
+  }
+}
 
-export const fetchSchool = id => {
-  return axios.get(`/api/schools/${id}`).then(school => student.data);
-};
 
 const reducer = (state = { schools: [], students: [] }, action) => {
   switch (action.type) {
+    case ENROLL_STUDENT: 
+      return {...state, students: state.students.map(student => {
+        if (student.id === action.student.id){
+          return action.student
+        }
+        return student
+      })
+    }
     case DELETE_STUDENT:
       return {
         ...state,

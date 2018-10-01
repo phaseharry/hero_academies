@@ -1,4 +1,5 @@
 import React from 'react';
+import StudentEnroller from './StudentEnroller'
 
 const SchoolFrom = props => {
   const {
@@ -13,6 +14,7 @@ const SchoolFrom = props => {
     history,
     addStudent,
   } = props;
+
   return (
     <div>
       <form onSubmit={handleSubmit} id="schoolForm">
@@ -28,14 +30,7 @@ const SchoolFrom = props => {
         Delete School
       </button>
       <h5>Enroll Student</h5>
-      <select name="enrollingStudents" form="schoolForm">
-        <option value={null} />
-        {students.map(student => (
-          <option key={student.id} value={student.id}>{`${student.firstName} ${
-            student.lastName
-          }`}</option>
-        ))}
-      </select>
+      <StudentEnroller students={students} schoolId={match.params.id}/>
     </div>
   );
 };
