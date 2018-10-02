@@ -32,11 +32,14 @@ class IndivStudent extends React.Component {
     }
   }
   componentDidUpdate(prevProps, prevState) {
+    console.log(prevProps)
+    console.log(this.props)
     if (
       prevProps.students.length !== this.props.students.length &&
       prevProps.schools.length !== this.props.schools.length
     ) {
       const student = this.filterStudent(this.props.students);
+      console.log(student)
       const { firstName, lastName, gpa, schoolId } = student;
       this.setState({
         firstName,

@@ -1,3 +1,7 @@
 /* #entire {
   background-image: url('https://img00.deviantart.net/8b81/i/2017/193/5/7/_wip__minecraft__u_a__high__boku_no_hero_academia__by_shafroplaysminecraft-dbftkw8.png');
 } */
+
+.hidden {
+  visibility: hidden;
+}

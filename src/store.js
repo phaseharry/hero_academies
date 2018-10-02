@@ -10,6 +10,8 @@ const EDIT_STUDENT = 'EDIT_STUDENT';
 const DELETE_SCHOOL = 'DELETE_SCHOOL';
 const DELETE_STUDENT = 'DELETE_STUDENT';
 const ENROLL_STUDENT = 'ENROLL_STUDENT';
+const CREATE_STUDENT = 'CREATE_STUDENT';
+
 //action creators
 const _loadData = (schools, students) => ({
   type: LOAD_DATA,
@@ -22,6 +24,15 @@ const _editStudent = student => ({ type: EDIT_STUDENT, student });
 const _deleteSchool = id => ({ type: DELETE_SCHOOL, id });
 const _deleteStudent = id => ({ type: DELETE_STUDENT, id });
 const _enrollStudent = student => ({ type: ENROLL_STUDENT, student})
+const _createStudent = student => ({ type: CREATE_STUDENT, student})
+
+export const createStudent = (student, history) => {
+  return async dispatch => {
+    const student = axios.post('/api/students', student)
+    dispatch(_createStudent(student.data))
+    history.push('/students')
+  }
+}
 
 export const loadData = () => {
   return async dispatch => {
@@ -80,6 +91,8 @@ export const enrollStudent = (studentId, schoolId) => {
 
 const reducer = (state = { schools: [], students: [] }, action) => {
   switch (action.type) {
+    case CREATE_STUDENT:
+    return {...state, students: [...state.students, action.student]}
     case ENROLL_STUDENT: 
       return {...state, students: state.students.map(student => {
         if (student.id === action.student.id){

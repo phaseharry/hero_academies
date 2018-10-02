@@ -7,6 +7,7 @@ import Students from './Students';
 import Nav from './Nav';
 import IndivSchool from './IndivSchool';
 import IndivStudent from './IndivStudent';
+import NewPerson from './NewPerson';
 
 class Main extends React.Component {
   componentDidMount() {
@@ -23,8 +24,9 @@ class Main extends React.Component {
                 path="/schools/:id"
                 render={props => <IndivSchool {...props} />}
               />
+              <Route path='/students/create' render={props => <NewPerson {...props}/>  } />
               <Route
-                path="/students/:id"
+                exact path="/students/:id"
                 render={props => <IndivStudent {...props} />}
               />
               <Route
