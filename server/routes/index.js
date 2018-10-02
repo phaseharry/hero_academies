@@ -66,10 +66,21 @@ router.put('/students/:id', (req, res, next) => {
 });
 
 router.post('/students', (req, res, next) => {
-  Student.create(req.body)
-    .then(student => res.json(student))
-    .catch(next);
-});
+  const { firstName, lastName, gpa, schoolId} = req.body
+  console.log(req.body)
+  Student.create({firstName, lastName, gpa})
+    .then(student => {
+      if(schoolId){
+        student.schoolId = schoolId
+        student.save()
+        .then(student => res.json(student))
+        .catch(next)
+      } else {
+        res.json(student)
+      }
+    })
+  }
+)
 
 router.delete('/students/:id', (req, res, next) => {
   Student.findById(req.params.id)

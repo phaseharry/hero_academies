@@ -11,7 +11,7 @@ class NewPerson extends React.Component{
             firstName: '',
             lastName: '',
             gpa: 0,
-            schoolId: 0,
+            schoolId: null,
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -26,15 +26,16 @@ class NewPerson extends React.Component{
         })
     }
     handleSubmit(event){
-        event.preventDefault()
-        console.log(this.state)
+        event.preventDefault();
+        this.props.create(this.state, this.props.history)
         
     }
     render(){  
         const {firstName, lastName, gpa, schoolId} = this.state 
         const { schools, history } = this.props
+        const { handleChange, handleSubmit} = this
         return (
-            <StudentForm firstName={firstName} lastName={lastName} gpa={gpa} schoolId={schoolId} schools={schools} history={history}/>
+            <StudentForm firstName={firstName} lastName={lastName} gpa={gpa} schoolId={schoolId} schools={schools} history={history} handleChange={handleChange} handleSubmit={handleSubmit}/>
         )
     }
 }

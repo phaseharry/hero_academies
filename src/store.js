@@ -27,8 +27,11 @@ const _enrollStudent = student => ({ type: ENROLL_STUDENT, student})
 const _createStudent = student => ({ type: CREATE_STUDENT, student})
 
 export const createStudent = (student, history) => {
+  const {firstName, lastName, gpa, schoolId} = student
+  console.log(student)
   return async dispatch => {
-    const student = axios.post('/api/students', student)
+    const student = await axios.post('/api/students', {firstName, lastName, gpa: +gpa, schoolId: +schoolId})
+    console.log(student.data)
     dispatch(_createStudent(student.data))
     history.push('/students')
   }

@@ -13,7 +13,7 @@ const StudentForm = props => {
     deleteStudent,
     schools,
   } = props;
-  console.log(match)
+
   return (
     <div>
       <form onSubmit={handleSubmit} id="studentForm">
@@ -23,15 +23,15 @@ const StudentForm = props => {
         <input value={lastName} name="lastName" onChange={handleChange} />
         <label htmlFor="gpa">GPA:</label>
         <input value={gpa} name="gpa" onChange={handleChange} />
-        <button type="submit">Edit</button>
+        <button type="submit">{match? 'Edit' : 'Create'}</button>
       </form>
-      <button onClick={() => deleteStudent(+match.params.id, history)} class={match? '' : 'hidden'}>
+      <button onClick={() => deleteStudent(+match.params.id, history)} className={match? '' : 'hidden'}>
         Delete Student
       </button>
       <div>
         <h5>Enroll</h5>
         <select name="schoolId" form="studentForm" onChange={handleChange}>
-          <option value={schoolId}>Keep Enrollment</option>
+          <option value={schoolId? schoolId : null}>{match? 'Keep Enrollment' : 'Scroll down to enroll'}</option>
           {schools.map(school => (
             <option key={school.id} value={school.id}>
               {school.name}
