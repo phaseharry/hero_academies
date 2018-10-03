@@ -1,5 +1,5 @@
 import React from 'react';
-import StudentEnroller from './StudentEnroller'
+import StudentEnroller from './StudentEnroller';
 
 const SchoolFrom = props => {
   const {
@@ -12,7 +12,6 @@ const SchoolFrom = props => {
     students,
     match,
     history,
-    addStudent,
   } = props;
 
   return (
@@ -26,11 +25,14 @@ const SchoolFrom = props => {
         <input value={address} name="address" onChange={handleChange} />
         <button type="submit">Edit</button>
       </form>
-      <button onClick={() => deleteSchool(+match.params.id, history)}>
+      <button
+        onClick={() => deleteSchool(+match.params.id, history)}
+        className={match ? '' : 'hidden'}
+      >
         Delete School
       </button>
       <h5>Enroll Student</h5>
-      <StudentEnroller students={students} schoolId={match.params.id}/>
+      <StudentEnroller students={students} schoolId={match.params.id} />
     </div>
   );
 };

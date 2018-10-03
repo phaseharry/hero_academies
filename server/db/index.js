@@ -103,6 +103,26 @@ const syncAndSeed = () => {
           lastName: 'Shishikura',
           gpa: faker.random.number(4),
         }),
+        Student.create({
+          firstName: 'Jeff',
+          lastName: 'McJeff',
+          gpa: faker.random.number(4),
+        }),
+        Student.create({
+          firstName: 'Medium Scott',
+          lastName: 'McScotty',
+          gpa: faker.random.number(4),
+        }),
+        Student.create({
+          firstName: 'Small Ale',
+          lastName: 'Thunky',
+          gpa: faker.random.number(4),
+        }),
+        Student.create({
+          firstName: 'Mike',
+          lastName: 'McMikey',
+          gpa: faker.random.number(4),
+        }),
       ]).then(([s1, s2, s3, s4, s5, s6, s7, s8, s9, s10]) => {
         s1.schoolId = UAHS.id;
         s2.schoolId = UAHS.id;

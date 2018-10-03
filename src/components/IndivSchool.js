@@ -10,11 +10,9 @@ class IndivSchool extends React.Component {
       name: '',
       address: '',
       description: '',
-      enrollingStudents: [],
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.addStudent = this.addStudent.bind(this);
     this.findSchool = this.findSchool.bind(this);
   }
   componentDidMount() {
@@ -66,21 +64,16 @@ class IndivSchool extends React.Component {
       this.props.history
     );
   }
-  addStudent(event) {
-    console.log(event.target.name);
-    console.log(event.target.value);
-  }
 
   render() {
-    const { name, address, description, enrollingStudents } = this.state;
+    const { name, address, description } = this.state;
     const { match, history, deleteSchool, students } = this.props;
-    const { handleChange, handleSubmit, addStudent } = this;
+    const { handleChange, handleSubmit } = this;
     const filteredStudents = students.filter(
       student => student.schoolId !== +match.params.id
     );
     return (
       <div>
-        <div>New Enrolling Students: {enrollingStudents.length}</div>
         <SchoolForm
           name={name}
           address={address}

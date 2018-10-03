@@ -11,6 +11,7 @@ const DELETE_SCHOOL = 'DELETE_SCHOOL';
 const DELETE_STUDENT = 'DELETE_STUDENT';
 const ENROLL_STUDENT = 'ENROLL_STUDENT';
 const CREATE_STUDENT = 'CREATE_STUDENT';
+const CREATE_SCHOOL = 'CREATE_SCHOOL';
 
 //action creators
 const _loadData = (schools, students) => ({
@@ -18,24 +19,37 @@ const _loadData = (schools, students) => ({
   schools,
   students,
 });
-
 const _editSchool = school => ({ type: EDIT_SCHOOL, school });
 const _editStudent = student => ({ type: EDIT_STUDENT, student });
 const _deleteSchool = id => ({ type: DELETE_SCHOOL, id });
 const _deleteStudent = id => ({ type: DELETE_STUDENT, id });
-const _enrollStudent = student => ({ type: ENROLL_STUDENT, student})
-const _createStudent = student => ({ type: CREATE_STUDENT, student})
+const _enrollStudent = student => ({ type: ENROLL_STUDENT, student });
+const _createStudent = student => ({ type: CREATE_STUDENT, student });
+const _createSchool = school => ({ type: CREATE_SCHOOL, school });
 
-export const createStudent = (student, history) => {
-  const {firstName, lastName, gpa, schoolId} = student
-  console.log(student)
+//thunks
+export const createSchool = (school, history) => {
   return async dispatch => {
-    const student = await axios.post('/api/students', {firstName, lastName, gpa: +gpa, schoolId: +schoolId})
-    console.log(student.data)
-    dispatch(_createStudent(student.data))
-    history.push('/students')
-  }
-}
+    const school = axios.post('/api/schools', school);
+    dispatch(_createSchool(school.data));
+    history.push('/schools');
+  };
+};
+export const createStudent = (student, history) => {
+  const { firstName, lastName, gpa, schoolId } = student;
+  console.log(student);
+  return async dispatch => {
+    const student = await axios.post('/api/students', {
+      firstName,
+      lastName,
+      gpa: +gpa,
+      schoolId: +schoolId,
+    });
+    console.log(student.data);
+    dispatch(_createStudent(student.data));
+    history.push('/students');
+  };
+};
 
 export const loadData = () => {
   return async dispatch => {
@@ -86,24 +100,29 @@ export const deleteStudent = (id, history) => {
 
 export const enrollStudent = (studentId, schoolId) => {
   return async dispatch => {
-    const student = await axios.put(`/api/students/${studentId}`, { schoolId: +schoolId })
-    dispatch(_enrollStudent(student.data))
-  }
-}
-
+    const student = await axios.put(`/api/students/${studentId}`, {
+      schoolId: +schoolId,
+    });
+    dispatch(_enrollStudent(student.data));
+  };
+};
 
 const reducer = (state = { schools: [], students: [] }, action) => {
   switch (action.type) {
+    case CREATE_SCHOOL:
+      return { ...state, schools: [...state.schools, action.school] };
     case CREATE_STUDENT:
-    return {...state, students: [...state.students, action.student]}
-    case ENROLL_STUDENT: 
-      return {...state, students: state.students.map(student => {
-        if (student.id === action.student.id){
-          return action.student
-        }
-        return student
-      })
-    }
+      return { ...state, students: [...state.students, action.student] };
+    case ENROLL_STUDENT:
+      return {
+        ...state,
+        students: state.students.map(student => {
+          if (student.id === action.student.id) {
+            return action.student;
+          }
+          return student;
+        }),
+      };
     case DELETE_STUDENT:
       return {
         ...state,
