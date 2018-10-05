@@ -17,6 +17,7 @@ router.get('/schools', (req, res, next) => {
 });
 
 router.post('/schools', (req, res, next) => {
+  console.log(req.body);
   School.create(req.body)
     .then(school => res.json(school))
     .catch(next);
@@ -42,7 +43,7 @@ router.delete('/schools/:id', (req, res, next) => {
 
 router.get('/students/:id', (req, res, next) => {
   Student.findById(req.params.id, {
-    include: [ { model : School  }]
+    include: [{ model: School }],
   })
     .then(student => res.json(student))
     .catch(next);
@@ -57,30 +58,30 @@ router.get('/students', (req, res, next) => {
 router.put('/students/:id', (req, res, next) => {
   // console.log(req.body)
   // const { firstName, lastName, schoolId, gpa } = req.body;
-  
-  Student.findById(req.params.id)
-  .then(student => student.update(req.body)
-  .then((student) => res.json(student))
-  .catch(next)
-  )
+
+  Student.findById(req.params.id).then(student =>
+    student
+      .update(req.body)
+      .then(student => res.json(student))
+      .catch(next)
+  );
 });
 
 router.post('/students', (req, res, next) => {
-  const { firstName, lastName, gpa, schoolId} = req.body
-  console.log(req.body)
-  Student.create({firstName, lastName, gpa})
-    .then(student => {
-      if(schoolId){
-        student.schoolId = schoolId
-        student.save()
+  const { firstName, lastName, gpa, schoolId } = req.body;
+  console.log(req.body);
+  Student.create({ firstName, lastName, gpa }).then(student => {
+    if (schoolId) {
+      student.schoolId = schoolId;
+      student
+        .save()
         .then(student => res.json(student))
-        .catch(next)
-      } else {
-        res.json(student)
-      }
-    })
-  }
-)
+        .catch(next);
+    } else {
+      res.json(student);
+    }
+  });
+});
 
 router.delete('/students/:id', (req, res, next) => {
   Student.findById(req.params.id)

@@ -1,7 +1,7 @@
 import React from 'react';
 import SchoolForm from './SchoolForm';
 import { createSchool } from '../store';
-import { connect } from 'http2';
+import { connect } from 'react-redux';
 
 class NewSchool extends React.Component {
   constructor() {
@@ -22,17 +22,19 @@ class NewSchool extends React.Component {
   }
   handleSubmit(event) {
     event.preventDefault();
+    const { name, address, description } = this.state;
+    this.props.create({ name, address, description }, this.props.history);
   }
   render() {
     const { name, address, description } = this.state;
     const { handleChange, handleSubmit } = this;
-    console.log(this.props.students);
+
     return (
       <SchoolForm
         name={name}
         address={address}
         description={description}
-        handleChang={handleChange}
+        handleChange={handleChange}
         handleSubmit={handleSubmit}
         history={this.props.history}
       />
@@ -47,7 +49,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    create: school => dispatch(createSchool(school)),
+    create: (school, history) => dispatch(createSchool(school, history)),
   };
 };
 

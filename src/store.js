@@ -30,8 +30,10 @@ const _createSchool = school => ({ type: CREATE_SCHOOL, school });
 //thunks
 export const createSchool = (school, history) => {
   return async dispatch => {
-    const school = axios.post('/api/schools', school);
-    dispatch(_createSchool(school.data));
+    console.log(school);
+    const created = await axios.post('/api/schools', school);
+    console.log(created.data);
+    dispatch(_createSchool(created.data));
     history.push('/schools');
   };
 };

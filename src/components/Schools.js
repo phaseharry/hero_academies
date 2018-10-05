@@ -5,15 +5,18 @@ import { Link } from 'react-router-dom';
 class Schools extends React.Component {
   render() {
     return (
-      <ul>
-        {this.props.schools.map(school => {
-          return (
-            <Link key={school.id} to={`/schools/${school.id}`}>
-              <li>{school.name}</li>
-            </Link>
-          );
-        })}
-      </ul>
+      <div>
+        <ul>
+          {this.props.schools.map(school => {
+            return (
+              <Link key={school.id} to={`/schools/${school.id}`}>
+                <li>{school.name}</li>
+              </Link>
+            );
+          })}
+        </ul>
+        <Link to="/schools/create">Create School</Link>
+      </div>
     );
   }
 }

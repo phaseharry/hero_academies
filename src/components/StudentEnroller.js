@@ -20,12 +20,13 @@ class StudentEnroller extends React.Component {
   render() {
     const { students, schoolId, enroll } = this.props;
     const { selectNewStudent } = this;
+    const finalizedStudents = students ? students : [];
     return (
-      <div>
+      <div className={schoolId ? '' : 'hidden'}>
         <form>
           <select onChange={selectNewStudent} name="selector">
             <option value={null} />
-            {students.map(student => (
+            {finalizedStudents.map(student => (
               <option value={student.id} key={student.id}>{`${
                 student.firstName
               } ${student.lastName}`}</option>
