@@ -72,6 +72,9 @@ class IndivSchool extends React.Component {
     const filteredStudents = students.filter(
       student => student.schoolId !== +match.params.id
     );
+    const studentsAttending = students.filter(
+      student => student.schoolId === +match.params.id
+    );
     return (
       <div>
         <SchoolForm
@@ -85,6 +88,16 @@ class IndivSchool extends React.Component {
           history={history}
           students={filteredStudents}
         />
+        <div>
+          <h4>Current Students</h4>
+          <ul>
+            {studentsAttending.map(student => (
+              <li key={student.id}>
+                {student.firstName} {student.lastName}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     );
   }
