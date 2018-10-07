@@ -68,15 +68,23 @@ class IndivSchool extends React.Component {
   render() {
     const { name, address, description } = this.state;
     const { match, history, deleteSchool, students } = this.props;
-    const { handleChange, handleSubmit } = this;
+    const { handleChange, handleSubmit, findSchool } = this;
     const filteredStudents = students.filter(
       student => student.schoolId !== +match.params.id
     );
     const studentsAttending = students.filter(
       student => student.schoolId === +match.params.id
     );
+    const school = findSchool() || {}
     return (
       <div>
+        <div>
+          <h3>School Information</h3>
+          <div>School: {school.name}</div>
+          <div>Address: {school.address}</div>
+          <p>Description: {school.description}</p>
+        </div>
+        <hr/>
         <SchoolForm
           name={name}
           address={address}
